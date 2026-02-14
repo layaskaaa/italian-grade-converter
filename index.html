@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Grade Converter | Italian University Standards</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="lang-switcher">
+        <button class="lang-btn" onclick="setLanguage('it')">ITA</button>
+        <button class="lang-btn" onclick="setLanguage('en')">ENG</button>
+        <button class="lang-btn" onclick="setLanguage('ar')">عربي</button>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="academic-seal-container">
+                <i class="fa-solid fa-building-columns seal-icon"></i>
+            </div>
+            <h1 data-i18n="title">Academic Grade Conversion Tool</h1>
+            <p data-i18n="subtitle">Inspired by the Italian Higher Education System (Universitaly)</p>
+            <div class="it-accent-line"></div>
+        </header>
+
+        <nav class="wizard-progress">
+            <div class="progress-step active" data-step="1">1</div>
+            <div class="progress-step" data-step="2">2</div>
+            <div class="progress-step" data-step="3">3</div>
+            <div class="progress-step" data-step="4">4</div>
+        </nav>
+
+        <main class="step-container">
+            <!-- Step 1: Type Selection -->
+            <section class="step active" id="step1">
+                <h2 data-i18n="step1_title">Select Conversion Type</h2>
+                <div class="conversion-cards">
+                    <div class="card" onclick="selectType('esami')">
+                        <i class="fa-solid fa-book-open-reader"></i>
+                        <h3 data-i18n="type_esami">Course Grades</h3>
+                        <p data-i18n="type_esami_desc">Individual subjects (Scale /30)</p>
+                    </div>
+                    <div class="card" onclick="selectType('laurea')">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <h3 data-i18n="type_laurea">Final Degree</h3>
+                        <p data-i18n="type_laurea_desc">Overall degree grade (Scale /110)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 2: Context Input -->
+            <section class="step" id="step2">
+                <h2 data-i18n="step2_title">Academic Context</h2>
+                <div class="form-group">
+                    <label data-i18n="vmin">Minimum Passing Grade (Vmin)</label>
+                    <input type="number" id="vmin" step="0.1" placeholder="Minimum grade to pass">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="vmax">Maximum Possible Grade (Vmax)</label>
+                    <input type="number" id="vmax" step="0.1" placeholder="Maximum achievable grade">
+                </div>
+                <p class="explanation" data-i18n="formula_explain">
+                    Vmin is the minimum grade required to pass, and Vmax is the highest possible grade in your system.
+                </p>
+            </section>
+
+            <!-- Step 3: Grade Input -->
+            <section class="step" id="step3">
+                <h2 data-i18n="step3_title_esami">Input Your Grades</h2>
+                <div id="grades-container">
+                    <!-- Dynamic grades go here -->
+                </div>
+                <button class="btn btn-outline" id="add-grade-btn" onclick="addGradeRow()" style="margin-top: 1rem;">
+                    <i class="fa-solid fa-plus"></i> <span data-i18n="add_subject">Add Subject</span>
+                </button>
+
+                <div id="degree-grade-container" style="display: none;">
+                    <div class="form-group">
+                        <label data-i18n="final_grade">Final Overall Grade</label>
+                        <input type="number" id="final-degree-val" step="0.1" placeholder="Your final average/total">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 4: Output -->
+            <section class="step" id="step4">
+                <h2 data-i18n="step4_title">Conversion Result</h2>
+
+                <div class="result-display">
+                    <div class="grade-circle">
+                        <span class="grade-val" id="converted-val">--</span>
+                        <span class="grade-scale" id="converted-scale">/30</span>
+                    </div>
+                    <div class="grade-label" id="academic-label">EXCELLENT</div>
+                </div>
+
+                <div id="classification-area">
+                    <h3 data-i18n="classification">Classification Table</h3>
+                    <table class="academic-table" id="classification-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="col_orig">Original</th>
+                                <th data-i18n="col_ital">Italian</th>
+                                <th data-i18n="col_class">Classification</th>
+                            </tr>
+                        </thead>
+                        <tbody id="classification-body">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <div class="wizard-nav">
+                <button class="btn btn-outline" id="prev-btn" onclick="prevStep()"
+                    style="visibility: hidden;">Back</button>
+                <button class="btn btn-primary" id="next-btn" onclick="nextStep()" disabled>Next</button>
+            </div>
+        </main>
+
+        <div class="disclaimer">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <strong>Disclaimer:</strong>
+            <span data-i18n="disclaimer_text">Conversion based on Universitaly guidelines. Final validation remains the
+                responsibility of the receiving university.</span>
+        </div>
+
+        <div class="sources-box">
+            <h4 data-i18n="official_sources"><i class="fa-solid fa-book"></i> Official Sources</h4>
+            <ul>
+                <li><a href="https://www.unitn.it/sites/default/files/2024-11/Tabella_di_conversione_dei_titoli_stranieri.pdf"
+                        target="_blank" data-i18n="source_universitaly">Universitaly - Tabella di conversione dei Titoli
+                        stranieri</a></li>
+                <li><a href="https://www.cimea.it/EN/pagina-sistema-di-votazione" target="_blank"
+                        data-i18n="source_cimea">CIMEA - Italian Voting System</a></li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>Academic Grade Conversion Tool</p>
+            <p>Inspired by the Italian Higher Education System</p>
+            <p>Created by Alaeddine Alioueche</p>
+        </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
