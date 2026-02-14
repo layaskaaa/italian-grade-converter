@@ -35,5 +35,4 @@ This tool is based on the following official academic standards:
 This tool is intended for informational purposes only based on Universitaly guidelines. The final validation of grade equivalence remains the sole responsibility of the receiving Italian university or institution.
 
 ## 👤 Credits
-Created by **Alaeddine Alioueche**.
 Inspired by the Italian Higher Education System.
